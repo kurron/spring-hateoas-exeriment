@@ -15,48 +15,27 @@
  ******************************************************************************/
 package org.kurron.user.adapter.rest
 
-import java.security.SecureRandom
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.hateoas.EntityLinks
-import org.springframework.hateoas.ExposesResourceFor
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 
 /**
  * Concrete REST adapter.
  */
-@Controller( "userController" )
-@RequestMapping( value = '/users', produces = 'application/json' )
-@ExposesResourceFor( User )
-class UserController implements UserAdapter {
-    private SecureRandom random = new SecureRandom()
-    private Map<Long, User> data = [:]
-    private UserResourceAssembler theAssembler = new UserResourceAssembler()
+@Controller( "discoveryController" )
+@RequestMapping( value = '/', produces = 'application/json' )
+class DiscoveryController {
     @Autowired EntityLinks entityLinks
 
-    UserController( ) {
-        (1..20).each {
-            data[it] = new User( it, randomHexString(), new Date( System.currentTimeMillis() ) )
-        }
-    }
-
-    private randomHexString( ) {
-        return Integer.toHexString( random.nextInt( Integer.MAX_VALUE ) ).toUpperCase()
-    }
-
-    @Override
-    @RequestMapping( method = RequestMethod.GET, value = '/{id}' )
-    ResponseEntity<UserResource> user( @PathVariable Integer id ) {
-        new ResponseEntity<UserResource>( theAssembler.toResource( data[id] ), HttpStatus.OK )
-    }
-
-    @Override
     @RequestMapping( method = RequestMethod.GET )
-    ResponseEntity<List<UserResource>> user( ) {
-        new ResponseEntity<List<UserResource>>( theAssembler.toResources( data.values().toList() ), HttpStatus.OK )
+    ResponseEntity<Links> resources( ) {
+        Links links = new Links()
+        links.links << linkTo( UserController ).withRel( 'users' )
+        new ResponseEntity<Links>( links, HttpStatus.OK )
     }
 }
