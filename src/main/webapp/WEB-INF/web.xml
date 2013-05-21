@@ -19,8 +19,13 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
     <context-param>
+        <param-name>contextClass</param-name>
+        <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+    </context-param>
+
+    <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:META-INF/spring/shared-context.xml</param-value>
+        <param-value>org.kurron.spring.SharedContext</param-value>
     </context-param>
 
     <context-param>
@@ -38,8 +43,12 @@
         <servlet-name>spring-mvc</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
+            <param-name>contextClass</param-name>
+            <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+        </init-param>
+        <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:META-INF/spring/web-context.xml</param-value>
+            <param-value>org.kurron.spring.WebContext</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
