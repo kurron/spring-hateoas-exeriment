@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody
  * Concrete REST adapter.
  */
 @Controller( "userController" )
-@RequestMapping( value = "/user" )
+@RequestMapping( value = '/user', produces = 'text/plain' )
 class UserController implements UserAdapter {
     @Override
     @RequestMapping( method = RequestMethod.GET )
