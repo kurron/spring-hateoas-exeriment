@@ -33,31 +33,30 @@ import org.springframework.web.bind.annotation.RequestMethod
 @RequestMapping( value = '/user', produces = 'application/json' )
 @ExposesResourceFor( User )
 class UserController implements UserAdapter {
-    private Map<Long, String> data = [:]
+    private SecureRandom random = new SecureRandom()
+    private Map<Long, User> data = [:]
     private UserResourceAssembler theAssembler = new UserResourceAssembler()
     @Autowired EntityLinks entityLinks
 
     UserController( ) {
-        SecureRandom random = new SecureRandom()
         (1..20).each {
-            data[it] = Integer.toHexString( random.nextInt( Integer.MAX_VALUE ) ).toUpperCase()
+            data[it] = new User( it, randomHexString(), new Date( System.currentTimeMillis() ) )
         }
+    }
+
+    private randomHexString( ) {
+        return Integer.toHexString( random.nextInt( Integer.MAX_VALUE ) ).toUpperCase()
     }
 
     @Override
     @RequestMapping( method = RequestMethod.GET, value = '/{id}' )
     ResponseEntity<UserResource> user( @PathVariable Integer id ) {
-        String value = data[id]
-
-        new ResponseEntity<UserResource>( theAssembler.toResource( new User( id, value ) ), HttpStatus.OK )
+        new ResponseEntity<UserResource>( theAssembler.toResource( data[id] ), HttpStatus.OK )
     }
 
     @Override
     @RequestMapping( method = RequestMethod.GET )
     ResponseEntity<List<UserResource>> user( ) {
-        def list = []
-        data.each { k, v -> list << new User( k, v ) }
-        def resources = theAssembler.toResources( list )
-        new ResponseEntity<List<UserResource>>( resources, HttpStatus.OK )
+        new ResponseEntity<List<UserResource>>( theAssembler.toResources( data.values().toList() ), HttpStatus.OK )
     }
 }

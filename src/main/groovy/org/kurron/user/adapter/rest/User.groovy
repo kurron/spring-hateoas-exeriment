@@ -21,16 +21,13 @@ import org.springframework.hateoas.Identifiable
  * A dummy user class.  It is used just to transfer data.
  */
 class User implements Identifiable<Long> {
-    Long key
-    String value
+    Long id
+    String name
+    Date date
 
-    User( final Long aKey, final String aValue ) {
-        key = aKey
-        value = aValue
-    }
-
-    @Override
-    Long getId( ) {
-        key
+    User( Long aId, String aName, Date aDate ) {
+        date = aDate
+        id = aId
+        name = aName
     }
 }

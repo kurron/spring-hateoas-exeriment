@@ -26,7 +26,7 @@ class UserResourceAssembler extends ResourceAssemblerSupport<User, UserResource>
     }
 
     public UserResource toResource( User user ) {
-        UserResource resource = createResourceWithId( user.key, user )
+        UserResource resource = createResourceWithId( user.id, user )
         resource.setUser( user )
         return resource
     }
