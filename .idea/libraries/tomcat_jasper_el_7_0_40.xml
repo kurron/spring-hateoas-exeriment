@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="tomcat-jasper-el-7.0.40">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-24/filestore/org.apache.tomcat/tomcat-jasper-el/7.0.40/jar/d12e28b9d7118ac514820880031248b439943b00/tomcat-jasper-el-7.0.40.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-24/filestore/org.apache.tomcat/tomcat-jasper-el/7.0.40/source/992dfce0b8fd75de87624427aa9e53698807e72f/tomcat-jasper-el-7.0.40-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

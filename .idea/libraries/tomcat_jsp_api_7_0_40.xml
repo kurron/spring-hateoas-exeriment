@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="tomcat-jsp-api-7.0.40">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-24/filestore/org.apache.tomcat/tomcat-jsp-api/7.0.40/jar/67bf184ef80d79d459dffe4716e729755dbba56b/tomcat-jsp-api-7.0.40.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-24/filestore/org.apache.tomcat/tomcat-jsp-api/7.0.40/source/a1c5dab385c3e883b3b33116ebd864075a63fdfb/tomcat-jsp-api-7.0.40-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

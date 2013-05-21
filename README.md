@@ -1,4 +1,4 @@
-spring-hateoas-exeriment
-========================
+tomcat-7-embedded-experiment
+============================
 
-An example project that I can use to experiment with Spring HATEOAS and REST Shell
+I just want to see how hard it is to use an embedded Tomcat 7 container
