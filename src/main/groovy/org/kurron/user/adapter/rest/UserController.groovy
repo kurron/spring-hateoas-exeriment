@@ -22,7 +22,6 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.ResponseBody
 
 /**
  * Concrete REST adapter.
@@ -30,7 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody
 @Controller( "userController" )
 @RequestMapping( value = '/users', produces = 'application/json' )
 class UserController implements UserAdapter {
-    private def data = [:]
+    private Map<Integer, String> data = [:]
     private UserResourceAssembler theAssembler = new UserResourceAssembler()
 
     UserController( ) {
@@ -42,11 +41,10 @@ class UserController implements UserAdapter {
 
     @Override
     @RequestMapping( method = RequestMethod.GET, value = '/{userId}' )
-    @ResponseBody
-    UserResource findByUserId( @PathVariable Integer userId ) {
+    ResponseEntity<UserResource> findByUserId( @PathVariable Integer userId ) {
         String value = data[userId]
 
-        theAssembler.toResource( new User( userId, value ) )
+        new ResponseEntity<UserResource>( theAssembler.toResource( new User( userId, value ) ), HttpStatus.OK )
     }
 
     @Override
