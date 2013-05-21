@@ -16,6 +16,7 @@
 package org.kurron.user.adapter.rest
 
 import java.security.SecureRandom
+import org.springframework.hateoas.ExposesResourceFor
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod
  */
 @Controller( "userController" )
 @RequestMapping( value = '/users', produces = 'application/json' )
+@ExposesResourceFor( User )
 class UserController implements UserAdapter {
     private Map<Long, String> data = [:]
     private UserResourceAssembler theAssembler = new UserResourceAssembler()
