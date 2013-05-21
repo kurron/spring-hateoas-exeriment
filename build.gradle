@@ -30,6 +30,7 @@ ext {
     spockVersion = '0.7-groovy-2.0'
     tomcatVersion = '7.0.40'
     jacksonVersion = '2.2.1'
+    jsonPathVersion = '0.8.1'
 }
 
 defaultTasks 'clean', 'projectReport', 'build', 'startScripts', 'installApp', 'distZip', 'distTar'
@@ -72,6 +73,7 @@ dependencies {
     runtime "org.slf4j:jul-to-slf4j:${slf4jVersion}"
     runtime "org.slf4j:log4j-over-slf4j:${slf4jVersion}"
     runtime "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    runtime "com.jayway.jsonpath:json-path:${jsonPathVersion}"
 
     testCompile( "junit:junit-dep:${junitVersion}" ) {
         exclude module: 'hamcrest-core'
