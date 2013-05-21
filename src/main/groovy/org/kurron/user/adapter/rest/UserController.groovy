@@ -15,6 +15,7 @@
  ******************************************************************************/
 package org.kurron.user.adapter.rest
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
 import java.security.SecureRandom
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.hateoas.EntityLinks
@@ -32,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 @Controller( "userController" )
 @RequestMapping( value = '/users', produces = 'application/json' )
 @ExposesResourceFor( User )
-class UserController implements UserAdapter {
+class UserController {
     private SecureRandom random = new SecureRandom()
     private Map<Long, User> data = [:]
     private UserResourceAssembler theAssembler = new UserResourceAssembler()
@@ -48,15 +49,21 @@ class UserController implements UserAdapter {
         return Integer.toHexString( random.nextInt( Integer.MAX_VALUE ) ).toUpperCase()
     }
 
-    @Override
     @RequestMapping( method = RequestMethod.GET, value = '/{id}' )
     ResponseEntity<UserResource> user( @PathVariable Integer id ) {
         new ResponseEntity<UserResource>( theAssembler.toResource( data[id] ), HttpStatus.OK )
     }
 
-    @Override
-    @RequestMapping( method = RequestMethod.GET )
+    @RequestMapping( method = RequestMethod.GET, value = '/all' )
     ResponseEntity<List<UserResource>> user( ) {
         new ResponseEntity<List<UserResource>>( theAssembler.toResources( data.values().toList() ), HttpStatus.OK )
+    }
+
+    @RequestMapping( method = RequestMethod.GET )
+    ResponseEntity<Links> list( ) {
+        Links links = new Links()
+        links.links << linkTo( UserController ).withSelfRel()
+
+        new ResponseEntity<Links>( links, HttpStatus.OK )
     }
 }
