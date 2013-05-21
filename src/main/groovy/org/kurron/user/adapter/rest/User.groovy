@@ -15,13 +15,15 @@
  ******************************************************************************/
 package org.kurron.user.adapter.rest
 
-import org.springframework.http.ResponseEntity
-
 /**
- * REST adapter for the user services.
+ * A dummy user class.  It is used just to transfer data.
  */
-public interface UserAdapter {
-    User findByUserId( Integer userId )
+class User {
+    Integer key
+    String value
 
-    ResponseEntity<List<User>> findAllIds( )
+    User( final Integer aKey, final String aValue ) {
+        key = aKey
+        value = aValue
+    }
 }

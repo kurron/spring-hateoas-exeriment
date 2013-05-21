@@ -29,6 +29,7 @@ ext {
     slf4jVersion = '1.7.5'
     spockVersion = '0.7-groovy-2.0'
     tomcatVersion = '7.0.40'
+    jacksonVersion = '2.2.1'
 }
 
 defaultTasks 'clean', 'projectReport', 'build', 'startScripts', 'installApp', 'distZip', 'distTar'
@@ -70,28 +71,27 @@ dependencies {
 
     runtime "org.slf4j:jul-to-slf4j:${slf4jVersion}"
     runtime "org.slf4j:log4j-over-slf4j:${slf4jVersion}"
+    runtime "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
-    testCompile("junit:junit-dep:${junitVersion}") {
+    testCompile( "junit:junit-dep:${junitVersion}" ) {
         exclude module: 'hamcrest-core'
     }
     testCompile "org.hamcrest:hamcrest-all:${hamcrestVersion}"
-    testCompile("org.spockframework:spock-core:${spockVersion}") {
+    testCompile( "org.spockframework:spock-core:${spockVersion}" ) {
         exclude module: 'groovy-all'
         exclude module: 'hamcrest-core'
     }
 }
 
 mainClassName = "org.kurron.tomcat.embed.Launcher"
-applicationDistribution.from('src/main/webapp') {
+applicationDistribution.from( 'src/main/webapp' ) {
     into 'src/main/webapp'
 }
 
 war {
-    classpath = classpath.filter { file ->
-        !file.name.startsWith('tomcat') && !file.name.startsWith('ecj')
-    }
+    classpath = classpath.filter { file -> ! file.name.startsWith( 'tomcat' ) && ! file.name.startsWith( 'ecj' ) }
 }
 
-task generateWrapper(type: Wrapper) {
+task generateWrapper( type: Wrapper ) {
     gradleVersion = '1.6'
 }
