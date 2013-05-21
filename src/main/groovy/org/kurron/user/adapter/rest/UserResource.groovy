@@ -15,13 +15,11 @@
  ******************************************************************************/
 package org.kurron.user.adapter.rest
 
-import org.springframework.http.ResponseEntity
+import org.springframework.hateoas.ResourceSupport
 
 /**
- * REST adapter for the user services.
+ * The REST view of the User.
  */
-public interface UserAdapter {
-    UserResource findByUserId( Integer userId )
-
-    ResponseEntity<List<UserResource>> findAllIds( )
+class UserResource extends ResourceSupport {
+    User user
 }

@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody
 @RequestMapping( value = '/users', produces = 'application/json' )
 class UserController implements UserAdapter {
     private def data = [:]
+    private UserResourceAssembler theAssembler = new UserResourceAssembler()
 
     UserController( ) {
         SecureRandom random = new SecureRandom()
@@ -42,16 +43,18 @@ class UserController implements UserAdapter {
     @Override
     @RequestMapping( method = RequestMethod.GET, value = '/{userId}' )
     @ResponseBody
-    User findByUserId( @PathVariable Integer userId ) {
+    UserResource findByUserId( @PathVariable Integer userId ) {
         String value = data[userId]
-        new User( userId, value )
+
+        theAssembler.toResource( new User( userId, value ) )
     }
 
     @Override
     @RequestMapping( method = RequestMethod.GET )
-    ResponseEntity<List<User>> findAllIds( ) {
+    ResponseEntity<List<UserResource>> findAllIds( ) {
         def list = []
         data.each { k, v -> list << new User( k, v ) }
-        new ResponseEntity<List<User>>( list, HttpStatus.OK )
+        def resources = theAssembler.toResources( list )
+        new ResponseEntity<List<UserResource>>( resources, HttpStatus.OK )
     }
 }

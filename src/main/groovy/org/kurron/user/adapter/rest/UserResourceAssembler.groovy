@@ -15,13 +15,19 @@
  ******************************************************************************/
 package org.kurron.user.adapter.rest
 
-import org.springframework.http.ResponseEntity
+import org.springframework.hateoas.mvc.ResourceAssemblerSupport
 
 /**
- * REST adapter for the user services.
+ * Creates a HATEOAS compliant resource.
  */
-public interface UserAdapter {
-    UserResource findByUserId( Integer userId )
+class UserResourceAssembler extends ResourceAssemblerSupport<User, UserResource> {
+    UserResourceAssembler( ) {
+        super( UserController, UserResource )
+    }
 
-    ResponseEntity<List<UserResource>> findAllIds( )
+    public UserResource toResource( User user ) {
+        UserResource resource = createResourceWithId( user.key, user )
+        resource.setUser( user )
+        return resource
+    }
 }
