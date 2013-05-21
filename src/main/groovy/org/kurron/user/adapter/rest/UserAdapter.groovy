@@ -21,7 +21,7 @@ import org.springframework.http.ResponseEntity
  * REST adapter for the user services.
  */
 public interface UserAdapter {
-    ResponseEntity<UserResource> findByUserId( Integer userId )
+    ResponseEntity<UserResource> user( Integer userId )
 
-    ResponseEntity<List<UserResource>> findAllIds( )
+    ResponseEntity<List<UserResource>> users( )
 }

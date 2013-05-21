@@ -15,15 +15,22 @@
  ******************************************************************************/
 package org.kurron.user.adapter.rest
 
+import org.springframework.hateoas.Identifiable
+
 /**
  * A dummy user class.  It is used just to transfer data.
  */
-class User {
-    Integer key
+class User implements Identifiable<Long> {
+    Long key
     String value
 
-    User( final Integer aKey, final String aValue ) {
+    User( final Long aKey, final String aValue ) {
         key = aKey
         value = aValue
+    }
+
+    @Override
+    Long getId( ) {
+        key
     }
 }

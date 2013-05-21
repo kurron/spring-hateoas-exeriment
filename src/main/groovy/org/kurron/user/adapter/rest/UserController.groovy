@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 @Controller( "userController" )
 @RequestMapping( value = '/users', produces = 'application/json' )
 class UserController implements UserAdapter {
-    private Map<Integer, String> data = [:]
+    private Map<Long, String> data = [:]
     private UserResourceAssembler theAssembler = new UserResourceAssembler()
 
     UserController( ) {
@@ -41,7 +41,7 @@ class UserController implements UserAdapter {
 
     @Override
     @RequestMapping( method = RequestMethod.GET, value = '/{userId}' )
-    ResponseEntity<UserResource> findByUserId( @PathVariable Integer userId ) {
+    ResponseEntity<UserResource> user( @PathVariable Integer userId ) {
         String value = data[userId]
 
         new ResponseEntity<UserResource>( theAssembler.toResource( new User( userId, value ) ), HttpStatus.OK )
@@ -49,7 +49,7 @@ class UserController implements UserAdapter {
 
     @Override
     @RequestMapping( method = RequestMethod.GET )
-    ResponseEntity<List<UserResource>> findAllIds( ) {
+    ResponseEntity<List<UserResource>> users( ) {
         def list = []
         data.each { k, v -> list << new User( k, v ) }
         def resources = theAssembler.toResources( list )
