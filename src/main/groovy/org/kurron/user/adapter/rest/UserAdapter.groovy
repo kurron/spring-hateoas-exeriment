@@ -23,5 +23,5 @@ import org.springframework.http.ResponseEntity
 public interface UserAdapter {
     ResponseEntity<UserResource> user( Integer userId )
 
-    ResponseEntity<List<UserResource>> users( )
+    ResponseEntity<List<UserResource>> user( )
 }

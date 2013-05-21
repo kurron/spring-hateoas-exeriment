@@ -16,6 +16,8 @@
 package org.kurron.user.adapter.rest
 
 import java.security.SecureRandom
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.hateoas.EntityLinks
 import org.springframework.hateoas.ExposesResourceFor
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -28,11 +30,12 @@ import org.springframework.web.bind.annotation.RequestMethod
  * Concrete REST adapter.
  */
 @Controller( "userController" )
-@RequestMapping( value = '/users', produces = 'application/json' )
+@RequestMapping( value = '/user', produces = 'application/json' )
 @ExposesResourceFor( User )
 class UserController implements UserAdapter {
     private Map<Long, String> data = [:]
     private UserResourceAssembler theAssembler = new UserResourceAssembler()
+    @Autowired EntityLinks entityLinks
 
     UserController( ) {
         SecureRandom random = new SecureRandom()
@@ -42,16 +45,16 @@ class UserController implements UserAdapter {
     }
 
     @Override
-    @RequestMapping( method = RequestMethod.GET, value = '/{userId}' )
-    ResponseEntity<UserResource> user( @PathVariable Integer userId ) {
-        String value = data[userId]
+    @RequestMapping( method = RequestMethod.GET, value = '/{id}' )
+    ResponseEntity<UserResource> user( @PathVariable Integer id ) {
+        String value = data[id]
 
-        new ResponseEntity<UserResource>( theAssembler.toResource( new User( userId, value ) ), HttpStatus.OK )
+        new ResponseEntity<UserResource>( theAssembler.toResource( new User( id, value ) ), HttpStatus.OK )
     }
 
     @Override
     @RequestMapping( method = RequestMethod.GET )
-    ResponseEntity<List<UserResource>> users( ) {
+    ResponseEntity<List<UserResource>> user( ) {
         def list = []
         data.each { k, v -> list << new User( k, v ) }
         def resources = theAssembler.toResources( list )
