@@ -18,6 +18,7 @@ package org.kurron.spring
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.hateoas.config.EnableEntityLinks
+import org.springframework.hateoas.config.EnableHypermediaSupport
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
 /**
@@ -27,4 +28,5 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc
 @EnableWebMvc
 @ComponentScan( basePackages = 'org.kurron.user.adapter.rest' )
 @EnableEntityLinks
+@EnableHypermediaSupport
 class WebContext {}
