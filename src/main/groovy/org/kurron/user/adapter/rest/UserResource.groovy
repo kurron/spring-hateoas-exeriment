@@ -15,11 +15,9 @@
  ******************************************************************************/
 package org.kurron.user.adapter.rest
 
-import org.springframework.hateoas.ResourceSupport
+import org.springframework.hateoas.Resource
 
 /**
  * The REST view of the User.
  */
-class UserResource extends ResourceSupport {
-    User user
-}
+class UserResource extends Resource<User> {}
