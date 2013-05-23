@@ -15,12 +15,10 @@
  ******************************************************************************/
 package org.kurron.user.adapter.rest
 
-import java.security.SecureRandom
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.hateoas.EntityLinks
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
+import java.lang.reflect.Method
+import org.kurron.tools.adapter.rest.BaseController
 import org.springframework.hateoas.ExposesResourceFor
-import org.springframework.hateoas.LinkDiscoverer
-import org.springframework.hateoas.RelProvider
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -34,31 +32,26 @@ import org.springframework.web.bind.annotation.RequestMethod
 @Controller( "userController" )
 @RequestMapping( value = '/user', produces = 'application/json' )
 @ExposesResourceFor( User )
-class UserController {
-    private SecureRandom random = new SecureRandom()
-    private Map<Long, User> data = [:]
+class UserController extends BaseController {
     private UserResourceAssembler theAssembler = new UserResourceAssembler()
-    @Autowired EntityLinks entityLinks
-    @Autowired RelProvider relationProvider
-    @Autowired LinkDiscoverer linkDiscoverer
-
-    UserController( ) {
-        (1..20).each {
-            data[it] = new User( it, randomHexString(), new Date( System.currentTimeMillis() ) )
-        }
-    }
-
-    private randomHexString( ) {
-        return Integer.toHexString( random.nextInt( Integer.MAX_VALUE ) ).toUpperCase()
-    }
 
     @RequestMapping( method = RequestMethod.GET, value = '/{id}' )
-    ResponseEntity<UserResource> user( @PathVariable Integer id ) {
-        new ResponseEntity<UserResource>( theAssembler.toResource( data[id] ), HttpStatus.OK )
+    ResponseEntity<UserResource> show( @PathVariable Long id ) {
+        User user = new User( id, 'bob', new Date( System.currentTimeMillis() ) )
+        new ResponseEntity<UserResource>( theAssembler.toResource( user ), HttpStatus.OK )
     }
 
     @RequestMapping( method = RequestMethod.GET )
-    ResponseEntity<UserResource> list( ) {
-        throw new UnsupportedOperationException( 'list' )
+    ResponseEntity<Map<String, ?>> discover( ) {
+        def list = []
+        addInIndividualUserLinks( list )
+        def map = ['links': assembleResourceInventoryLinks( list )]
+        new ResponseEntity<Map<String, ?>>( map, HttpStatus.OK )
     }
+
+    private static addInIndividualUserLinks( list ) {
+        Method method = UserController.class.getMethod( 'show', Long )
+        (1..10).each { Long id -> list << linkTo( method, id ).withRel( 'users.user' ) }
+    }
+
 }

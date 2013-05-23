@@ -17,10 +17,6 @@ package org.kurron.root.adapter.rest
 
 import org.kurron.tools.adapter.rest.BaseController
 import org.kurron.user.adapter.rest.User
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.hateoas.EntityLinks
-import org.springframework.hateoas.LinkDiscoverer
-import org.springframework.hateoas.RelProvider
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -33,9 +29,6 @@ import org.springframework.web.bind.annotation.RequestMethod
 @Controller( 'rootController' )
 @RequestMapping( value = '/', produces = 'application/json' )
 class RootController extends BaseController {
-    @Autowired EntityLinks entityLinks
-    @Autowired RelProvider relationProvider
-    @Autowired LinkDiscoverer linkDiscoverer
 
     /**
      * This method will present links back to the REST client to all the known
