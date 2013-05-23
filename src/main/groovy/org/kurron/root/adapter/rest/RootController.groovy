@@ -15,10 +15,10 @@
  ******************************************************************************/
 package org.kurron.root.adapter.rest
 
+import org.kurron.tools.adapter.rest.BaseController
 import org.kurron.user.adapter.rest.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.hateoas.EntityLinks
-import org.springframework.hateoas.Link
 import org.springframework.hateoas.LinkDiscoverer
 import org.springframework.hateoas.RelProvider
 import org.springframework.http.HttpStatus
@@ -30,9 +30,9 @@ import org.springframework.web.bind.annotation.RequestMethod
 /**
  * Concrete REST adapter.
  */
-@Controller( "rootController" )
+@Controller( 'rootController' )
 @RequestMapping( value = '/', produces = 'application/json' )
-class RootController {
+class RootController extends BaseController {
     @Autowired EntityLinks entityLinks
     @Autowired RelProvider relationProvider
     @Autowired LinkDiscoverer linkDiscoverer
@@ -44,17 +44,8 @@ class RootController {
      */
     @RequestMapping( method = RequestMethod.GET )
     ResponseEntity<Map<String, ?>> discover( ) {
-        def map = ['links': assembleResourceInventoryLinks()]
+        def list = [entityLinks.linkFor( User ).withRel( 'user' )]
+        def map = ['links': assembleResourceInventoryLinks( list )]
         new ResponseEntity<Map<String, ?>>( map, HttpStatus.OK )
-    }
-
-    private assembleResourceInventoryLinks( ) {
-        List<Map<String, String>> links = new ArrayList<>( 1 )
-        Map<String, String> map = [:]
-        Link link = entityLinks.linkFor( User ).withRel( 'user' )
-        map.put( 'rel', link.rel )
-        map.put( 'href', link.href )
-        links << map
-        return links
     }
 }
