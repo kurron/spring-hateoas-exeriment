@@ -15,11 +15,12 @@
  ******************************************************************************/
 package org.kurron.user.adapter.rest
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
 import java.security.SecureRandom
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.hateoas.EntityLinks
 import org.springframework.hateoas.ExposesResourceFor
+import org.springframework.hateoas.LinkDiscoverer
+import org.springframework.hateoas.RelProvider
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -31,13 +32,15 @@ import org.springframework.web.bind.annotation.RequestMethod
  * Concrete REST adapter.
  */
 @Controller( "userController" )
-@RequestMapping( value = '/users', produces = 'application/json' )
+@RequestMapping( value = '/user', produces = 'application/json' )
 @ExposesResourceFor( User )
 class UserController {
     private SecureRandom random = new SecureRandom()
     private Map<Long, User> data = [:]
     private UserResourceAssembler theAssembler = new UserResourceAssembler()
     @Autowired EntityLinks entityLinks
+    @Autowired RelProvider relationProvider
+    @Autowired LinkDiscoverer linkDiscoverer
 
     UserController( ) {
         (1..20).each {
@@ -54,16 +57,8 @@ class UserController {
         new ResponseEntity<UserResource>( theAssembler.toResource( data[id] ), HttpStatus.OK )
     }
 
-    @RequestMapping( method = RequestMethod.GET, value = '/all' )
-    ResponseEntity<List<UserResource>> user( ) {
-        new ResponseEntity<List<UserResource>>( theAssembler.toResources( data.values().toList() ), HttpStatus.OK )
-    }
-
     @RequestMapping( method = RequestMethod.GET )
-    ResponseEntity<Links> list( ) {
-        Links links = new Links()
-        links.links << linkTo( UserController ).withSelfRel()
-
-        new ResponseEntity<Links>( links, HttpStatus.OK )
+    ResponseEntity<UserResource> list( ) {
+        throw new UnsupportedOperationException( 'list' )
     }
 }

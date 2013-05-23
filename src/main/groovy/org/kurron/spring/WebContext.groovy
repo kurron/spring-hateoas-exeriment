@@ -26,7 +26,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan( basePackages = 'org.kurron.user.adapter.rest' )
+@ComponentScan( basePackages = ['org.kurron.user.adapter.rest', 'org.kurron.root.adapter.rest'] )
 @EnableEntityLinks
 @EnableHypermediaSupport
 class WebContext {}

@@ -13,11 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  ******************************************************************************/
-package org.kurron.user.adapter.rest
+package org.kurron.root.adapter.rest
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
+import org.kurron.user.adapter.rest.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.hateoas.EntityLinks
+import org.springframework.hateoas.Link
+import org.springframework.hateoas.LinkDiscoverer
+import org.springframework.hateoas.RelProvider
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -27,15 +30,31 @@ import org.springframework.web.bind.annotation.RequestMethod
 /**
  * Concrete REST adapter.
  */
-@Controller( "discoveryController" )
+@Controller( "rootController" )
 @RequestMapping( value = '/', produces = 'application/json' )
-class DiscoveryController {
+class RootController {
     @Autowired EntityLinks entityLinks
+    @Autowired RelProvider relationProvider
+    @Autowired LinkDiscoverer linkDiscoverer
 
+    /**
+     * This method will present links back to the REST client to all the known
+     * resources.
+     * @return a REST shell compatible collection of resource.
+     */
     @RequestMapping( method = RequestMethod.GET )
-    ResponseEntity<Links> resources( ) {
-        Links links = new Links()
-        links.links << linkTo( UserController ).withRel( 'users' )
-        new ResponseEntity<Links>( links, HttpStatus.OK )
+    ResponseEntity<Map<String, ?>> discover( ) {
+        def map = ['links': assembleResourceInventoryLinks()]
+        new ResponseEntity<Map<String, ?>>( map, HttpStatus.OK )
+    }
+
+    private assembleResourceInventoryLinks( ) {
+        List<Map<String, String>> links = new ArrayList<>( 1 )
+        Map<String, String> map = [:]
+        Link link = entityLinks.linkFor( User ).withRel( 'user' )
+        map.put( 'rel', link.rel )
+        map.put( 'href', link.href )
+        links << map
+        return links
     }
 }
